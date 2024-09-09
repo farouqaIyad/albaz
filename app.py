@@ -7,7 +7,7 @@ from function import (
 from streamlit_pdf_viewer import pdf_viewer
 
 
-mapping = load_mapping(r"C:\Users\farouq\Desktop\projects\freelance project\rules.json")
+mapping = load_mapping(r"rules.json")
 col1,center,col2 = st.columns(3)
 with center:
     st.image(r"logo.jpg",width=200)

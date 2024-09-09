@@ -14,13 +14,13 @@ def load_mapping(file_path):
 
 
 table_of_words = load_mapping(
-    r"C:\Users\farouq\Desktop\projects\freelance project\table_of_words.json"
+    r"table_of_words.json"
 )
 table_of_two_chars = load_mapping(
-    r"C:\Users\farouq\Desktop\projects\freelance project\two_chars.json"
+    r"two_chars.json"
 )
 tanween_final_codes = load_mapping(
-    r"C:\Users\farouq\Desktop\projects\freelance project\tanween_final.json"
+    r"tanween_final.json"
 )
 
 tanween_list = [1614, 1615, 1616, 1617, 1611, 1612, 1613]
