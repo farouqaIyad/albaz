@@ -23,6 +23,8 @@ tanween_final_codes = load_mapping(
     r"tanween_final.json"
 )
 
+one_words = load_mapping(r"one_word.json")
+
 tanween_list = [1614, 1615, 1616, 1617, 1611, 1612, 1613]
 shadda_uni_code = 1617
 
@@ -43,7 +45,7 @@ def split_words_with_last_indicator(text):
     return result
 
 
-def in_tanween_list(output, word, char, i, mapping, b):
+def in_tanween_list(output, word, char, i, mapping, b,indicator):
 
     char_uni_code = ord(char)
     if i + 1 < len(word) and ord(word[i + 1]) == shadda_uni_code:
@@ -53,11 +55,13 @@ def in_tanween_list(output, word, char, i, mapping, b):
     if char_uni_code == shadda_uni_code and b:
         output.append(output[-1])
 
-    if char_uni_code != shadda_uni_code:
+    if char_uni_code != shadda_uni_code :
         if (
             i == len(word) - 1
             or (i == len(word) - 2 and ord(word[-1])) == shadda_uni_code
         ):
+            if i==len(word)-1 and ord(word[i]) in tanween_list and indicator=='last':
+                return output, b
             output.append(tanween_final_codes.get(str(char_uni_code), char))
 
         else:
@@ -66,17 +70,41 @@ def in_tanween_list(output, word, char, i, mapping, b):
     return output, b
 
 
-def shamsi_and_qamari(word):
-    if word.startswith("ال"):
+def shamsi_and_qamari(word,word_count):
+    if word_count==1 :
+        if len(word)>2:
+            if  word[2] not in "أاإبغ حجك وخف عقيمه" and word.startswith(("ال")):
+                word = "A"+word[2]+word[2:]
+                return word
+            elif word[3] not in "أاإبغ حجك وخف عقيمه" and word.startswith(("وال")):
+                word = "WA"+word[3]+word[3:]
+                return word
+
+        
+    
+
+
+    if word.startswith(("ال")):
         if ord(word[2]) == 1618:
-            if word[3] in "ابغ حجك وخف عقيمه":
+            if word[3] in "أاإبغ حجك وخف عقيمه":
                 word = "\u2090l" + word[3:]
             else:
                 word = "\u2090" + word[3:]
-        if word[2] in "ابغ حجك وخف عقيمه":
+        if word[2] in "اأإبغ حجك وخف عقيمه":
             word = "\u2090l" + word[2:]
         else:
             word = "\u2090" + word[2:]
+    if word.startswith("وال"):
+        if ord(word[3]) == 1618:
+            if word[4] in "أاإبغ حجك وخف عقيمه":
+                word = "wal" + word[4:]
+            else:
+                word = "wa" + word[4:]
+        if word[3] in "اأإبغ حجك وخف عقيمه":
+            word = "wal" + word[3:]
+        else:
+            word = "wa" + word[3:]
+        
 
     return word
 
@@ -91,13 +119,13 @@ def skipables(word):
 def iterate_over_single_word(word, mapping, indicator):
     output = []
     b = True
-    
+    print(indicator)
     for i, char in enumerate(word):
         char_uni_code = ord(char)
         print(f"Character: {char}, Unicode: {char_uni_code}")
 
         if char_uni_code in tanween_list:
-            output, b = in_tanween_list(output, word, char, i, mapping, b)
+            output, b = in_tanween_list(output, word, char, i, mapping, b,indicator)
             continue
 
         mapped_value = mapping.get(char, char)
@@ -109,7 +137,10 @@ def iterate_over_single_word(word, mapping, indicator):
             continue
         else:
             if char == "ي" and ord(word[i - 1]) == 1616:
-                output.append("e")
+                if i < len(word)-1  and ord(word[i+1])==1614:
+                    output.append("y")
+                else:
+                    output.append("e")
                 continue
             elif  char == "و" and ord(word[i - 1]) == 1615:
                 output.append("o")
@@ -122,19 +153,40 @@ def iterate_over_single_word(word, mapping, indicator):
 
 def iterate_over_words(words, mapping):
     all_output = []
+    
+
+    for i in range(len(words)-1):
+        print(type(words[i][0]))
+        if words[i][0].endswith("َى") and words[i+1][0].startswith("ال"):
+            
+            temp_list = list(words[i])  
+            temp_list[0] = temp_list[0].replace('ى', '\u2090', len(temp_list[0])-1)
+            words[i] = tuple(temp_list)
+
+
 
     for word, indicator in words:
         if word not in table_of_words:
-            word = shamsi_and_qamari(word)
+            
+            word = shamsi_and_qamari(word,len(words))
             word = skipables(word)
             output = iterate_over_single_word(word, mapping, indicator)
             str_output = "".join(output)
             str_output = str_output.replace("eee","eyy")
+
             str_output = string.capwords(str_output)
             output = str.split(str_output)
             all_output.append("".join(output) + " ")
         else:
-            all_output.append(table_of_words.get(word, word))
+            if len(words)==1:
+                all_output.append(one_words.get(word,word))
+            else:
+
+                mapped_value = table_of_words.get(word, word)
+                if isinstance(mapped_value, dict):
+                    all_output.append(mapped_value.get(indicator, word))
+                    continue
+                all_output.append(mapped_value)
             
     return all_output
 
