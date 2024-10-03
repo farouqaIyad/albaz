@@ -72,7 +72,7 @@ def in_tanween_list(output, word, char, i, mapping, b,indicator):
 
 def shamsi_and_qamari(word,word_count):
     if word_count==1 :
-        if len(word)>2:
+        if len(word)>3:
             if  word[2] not in "أاإبغ حجك وخف عقيمه" and word.startswith(("ال")):
                 word = "A"+word[2]+word[2:]
                 return word
@@ -85,6 +85,8 @@ def shamsi_and_qamari(word,word_count):
             elif word[3] in "أاإبغ حجك وخف عقيمه" and word.startswith(("وال")):
                 word = "Wal"+word[3:]
                 return word
+        else:
+            pass
 
         
     
