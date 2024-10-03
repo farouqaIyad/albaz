@@ -79,6 +79,12 @@ def shamsi_and_qamari(word,word_count):
             elif word[3] not in "أاإبغ حجك وخف عقيمه" and word.startswith(("وال")):
                 word = "WA"+word[3]+word[3:]
                 return word
+            elif  word[2] in "أاإبغ حجك وخف عقيمه" and word.startswith(("ال")):
+                word = "Al"+word[2:]
+                return word
+            elif word[3] in "أاإبغ حجك وخف عقيمه" and word.startswith(("وال")):
+                word = "Wal"+word[3:]
+                return word
 
         
     
