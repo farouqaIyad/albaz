@@ -32,7 +32,7 @@ with col2:
         st.markdown("###")
         st.markdown("###")         
             
-        if st.button("عَـرمِـن/Transliterate"):
+        if st.button("Transliterate عَـرمِـن"):
             with col3:
                     aa = st.text_area('\u00A0\u00A0\
                                       \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\

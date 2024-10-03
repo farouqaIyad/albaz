@@ -178,7 +178,7 @@ def iterate_over_words(words, mapping):
             output = str.split(str_output)
             all_output.append("".join(output) + " ")
         else:
-            if len(words)==1:
+            if len(words)==1 and word in one_words:
                 all_output.append(one_words.get(word,word))
             else:
 
@@ -186,7 +186,8 @@ def iterate_over_words(words, mapping):
                 if isinstance(mapped_value, dict):
                     all_output.append(mapped_value.get(indicator, word))
                     continue
-                all_output.append(mapped_value)
+                else:
+                    all_output.append(mapped_value)
             
     return all_output
 
