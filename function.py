@@ -73,10 +73,15 @@ def in_tanween_list(output, word, char, i, mapping, b,indicator):
 def shamsi_and_qamari(word,word_count):
     if word_count==1 :
         if len(word)>3:
+            print('your problem is in this area')
             if  word[2] not in "أاإبغ حجك وخف عقيمه" and word.startswith(("ال")):
+                if ord(word[3]) ==1617:
+                    return "A"+word[2:]
                 word = "A"+word[2]+word[2:]
                 return word
             elif word[3] not in "أاإبغ حجك وخف عقيمه" and word.startswith(("وال")):
+                if ord(word[4]) ==1617:
+                    return "WA"+word[3:]
                 word = "WA"+word[3]+word[3:]
                 return word
             elif  word[2] in "أاإبغ حجك وخف عقيمه" and word.startswith(("ال")):
@@ -87,9 +92,6 @@ def shamsi_and_qamari(word,word_count):
                 return word
         else:
             pass
-
-        
-    
 
 
     if word.startswith(("ال")):
@@ -159,6 +161,8 @@ def iterate_over_single_word(word, mapping, indicator):
     return output
 
 
+
+
 def iterate_over_words(words, mapping):
     all_output = []
     
@@ -170,7 +174,6 @@ def iterate_over_words(words, mapping):
             temp_list = list(words[i])  
             temp_list[0] = temp_list[0].replace('ى', '\u2090', len(temp_list[0])-1)
             words[i] = tuple(temp_list)
-
 
 
     for word, indicator in words:
