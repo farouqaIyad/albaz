@@ -73,9 +73,13 @@ def in_tanween_list(output, word, char, i, mapping, b,indicator):
 def shamsi_and_qamari(word,word_count):
     if word_count==1 :
         if len(word)>3:
-            print('your problem is in this area')
-            if  word[2] not in "أاإبغ حجك وخف عقيمه" and word.startswith(("ال")):
+            if ord(word[2]) == 1618 and word[3] in "أاإبغ حجك وخف عقيمه" and word.startswith(("ال")):
+                word = "Al" + word[3:]
+                return word
+            elif  word[2] not in "أاإبغ حجك وخف عقيمه" and word.startswith(("ال")):
                 if ord(word[3]) ==1617:
+                    return "A"+word[2:]
+                if ord(word[3])in tanween_list and ord(word[4]):
                     return "A"+word[2:]
                 word = "A"+word[2]+word[2:]
                 return word
@@ -92,7 +96,6 @@ def shamsi_and_qamari(word,word_count):
                 return word
         else:
             pass
-
 
     if word.startswith(("ال")):
         if ord(word[2]) == 1618:
@@ -129,10 +132,8 @@ def skipables(word):
 def iterate_over_single_word(word, mapping, indicator):
     output = []
     b = True
-    print(indicator)
     for i, char in enumerate(word):
         char_uni_code = ord(char)
-        print(f"Character: {char}, Unicode: {char_uni_code}")
 
         if char_uni_code in tanween_list:
             output, b = in_tanween_list(output, word, char, i, mapping, b,indicator)
@@ -161,14 +162,11 @@ def iterate_over_single_word(word, mapping, indicator):
     return output
 
 
-
-
 def iterate_over_words(words, mapping):
     all_output = []
-    
+
 
     for i in range(len(words)-1):
-        print(type(words[i][0]))
         if words[i][0].endswith("َى") and words[i+1][0].startswith("ال"):
             
             temp_list = list(words[i])  
@@ -178,7 +176,7 @@ def iterate_over_words(words, mapping):
 
     for word, indicator in words:
         if word not in table_of_words:
-            
+
             word = shamsi_and_qamari(word,len(words))
             word = skipables(word)
             output = iterate_over_single_word(word, mapping, indicator)
@@ -211,12 +209,24 @@ def transcribe_arabic_to_english(text, mapping):
     for line in lines:
         words = split_words_with_last_indicator(line)
         transcribed_line = iterate_over_words(words, mapping)
-        
         for i in range(len(transcribed_line)-1):
             if transcribed_line[i].endswith("\u207f ") and transcribed_line[i+1].startswith("\u2090"):
                 transcribed_line[i] = transcribed_line[i].replace("\u207f","\u207f\u1d49")
+            
+        if transcribed_line[-1].endswith('\u1d49 '):
+            transcribed_line[-1] = transcribed_line[-1].replace('\u1d49 ',"")
+
+
+        if transcribed_line[0].startswith('\u2090'):
+            print('it doess')
+            transcribed_line[0] = transcribed_line[0].replace('\u2090',"A")
+
+
         transcribed_lines.append("".join(transcribed_line))
+
+
     
     # Join the transcribed lines with new line characters
     return "\n".join(transcribed_lines)
+
 
