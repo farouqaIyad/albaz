@@ -126,6 +126,7 @@ def skipables(word):
     """Replace two-character sequences based on the table."""
     for key, replacement in table_of_two_chars.items():
         word = re.sub(re.escape(key), replacement, word)
+        
     return word
 
 
@@ -147,10 +148,11 @@ def iterate_over_single_word(word, mapping, indicator):
         elif char_uni_code == 1618:
             continue
         else:
-            if char == "ي" and ord(word[i - 1]) == 1616:
+            if char == "ي" and ord(word[i - 1]) == 1616 or char =='ي' and ord(word[i-1])==shadda_uni_code and ord(word[i-2])==1616:
                 if i < len(word)-1  and ord(word[i+1])==1614:
                     output.append("y")
                 else:
+                    print(output)
                     output.append("e")
                 continue
             elif  char == "و" and ord(word[i - 1]) == 1615:
@@ -218,8 +220,10 @@ def transcribe_arabic_to_english(text, mapping):
 
 
         if transcribed_line[0].startswith('\u2090'):
-            print('it doess')
             transcribed_line[0] = transcribed_line[0].replace('\u2090',"A")
+        
+        if transcribed_line[0].startswith('\u2091'):
+            transcribed_line[0] = transcribed_line[0].replace('\u2091',"E")
 
 
         transcribed_lines.append("".join(transcribed_line))
