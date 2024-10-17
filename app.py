@@ -76,25 +76,25 @@ with center:
 # # pdf = r'dict.pdf'
 
 # # pdf_viewer(input = pdf,width = 700)
-st.markdown(
-        """
-        <style>
-        .footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background-color: #f1f1f1;
-            color: black;
-            text-align: center;
-            padding: 10px;
-            font-size: 14px;
-        }
-        </style>
-        <div class="footer">
-            <p>إذا وجدت خطأ ما نرجو التواصل لنحل المشكلة    
-            <a href="https://wa.me/+966567203053" target="_blank"> +966567203053</a></p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+# st.markdown(
+#         """
+#         <style>
+#         .footer {
+#             position: fixed;
+#             left: 0;
+#             bottom: 0;
+#             width: 100%;
+#             background-color: #f1f1f1;
+#             color: black;
+#             text-align: center;
+#             padding: 10px;
+#             font-size: 14px;
+#         }
+#         </style>
+#         <div class="footer">
+#             <p>إذا وجدت خطأ ما نرجو التواصل لنحل المشكلة    
+#             <a href="https://wa.me/+966567203053" target="_blank"> +966567203053</a></p>
+#         </div>
+#         """,
+#         unsafe_allow_html=True
+#     )
