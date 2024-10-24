@@ -144,21 +144,20 @@ def iterate_over_single_word(word, mapping, indicator):
 
         if isinstance(mapped_value, dict):
             output.append(mapped_value.get(indicator, char))
-            continue
         elif char_uni_code == 1618:
             continue
         else:
             if char == "ي" and ord(word[i - 1]) == 1616 or char =='ي' and ord(word[i-1])==shadda_uni_code and ord(word[i-2])==1616:
+                print(char)
                 if i < len(word)-1  and ord(word[i+1])==1614:
                     output.append("y")
                 else:
-                    print(output)
                     output.append("e")
                 continue
             elif  char == "و" and ord(word[i - 1]) == 1615:
                 output.append("o")
                 continue
-
+        print(mapped_value,char)
         output.append(mapped_value)
 
     return output
@@ -178,13 +177,11 @@ def iterate_over_words(words, mapping):
 
     for word, indicator in words:
         if word not in table_of_words:
-
             word = shamsi_and_qamari(word,len(words))
             word = skipables(word)
             output = iterate_over_single_word(word, mapping, indicator)
             str_output = "".join(output)
             str_output = str_output.replace("eee","eyy")
-
             str_output = string.capwords(str_output)
             output = str.split(str_output)
             all_output.append("".join(output) + " ")
@@ -199,7 +196,10 @@ def iterate_over_words(words, mapping):
                     continue
                 else:
                     all_output.append(mapped_value)
-            
+
+    for i,word in enumerate(all_output):
+        if word == '2abee ' and all_output[i+1].startswith("\u2090"):
+            all_output[i] = "2abe\u1d49"
     return all_output
 
 
@@ -218,12 +218,18 @@ def transcribe_arabic_to_english(text, mapping):
         if transcribed_line[-1].endswith('\u1d49 '):
             transcribed_line[-1] = transcribed_line[-1].replace('\u1d49 ',"")
 
+        if transcribed_line[-1].endswith('\u1d43 '):
+            transcribed_line[-1] = transcribed_line[-1].replace('\u1d43 ',"")
+
+        if transcribed_line[-1].endswith('\u1d52 '):
+            transcribed_line[-1] = transcribed_line[-1].replace('\u1d52 ',"")
 
         if transcribed_line[0].startswith('\u2090'):
             transcribed_line[0] = transcribed_line[0].replace('\u2090',"A")
         
-        if transcribed_line[0].startswith('\u2091'):
+        if transcribed_line[0].startswith('\u2091 ') and not transcribed_line[0].startswith("\2091bn\u1d49"):
             transcribed_line[0] = transcribed_line[0].replace('\u2091',"E")
+        
 
 
         transcribed_lines.append("".join(transcribed_line))
