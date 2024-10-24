@@ -200,7 +200,7 @@ def iterate_over_words(words, mapping):
 
     for i,word in enumerate(all_output):
         if word == '2abee ' and all_output[i+1].startswith("\u2090"):
-            all_output[i] = "2abe\u1d49"
+            all_output[i] = "2abe\u2091"
     return all_output
 
 
