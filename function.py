@@ -144,6 +144,7 @@ def iterate_over_single_word(word, mapping, indicator):
 
         if isinstance(mapped_value, dict):
             output.append(mapped_value.get(indicator, char))
+            continue
         elif char_uni_code == 1618:
             continue
         else:
