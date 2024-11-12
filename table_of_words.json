@@ -80,5 +80,14 @@
     "وسلم)":{
         "other":"wasallam\u1d43) ",
         "last":"wasallam) "
+},
+"وَسَلَّم":{
+    "other":"wasallam\u1d43 ",
+    "last":"wasallam "
+},
+"وَسَلَّم-":{
+    "other":"wasallam\u1d43- ",
+    "last":"wasallam- "
 }
+
 }
